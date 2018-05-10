@@ -11,44 +11,44 @@ using namespace std;
 // 各个进程已分配资源的数目
 int allocation[process_number][resource_kind] =
 {
-    {0, 0, 3, 2},
-    {1, 0, 0, 0},
-    {1, 3, 5, 4},
-    {0, 3, 3, 2},
-    {0, 0, 1, 4}
+    { 0, 0, 3, 2 },
+    { 1, 0, 0, 0 },
+    { 1, 3, 5, 4 },
+    { 0, 3, 3, 2 },
+    { 0, 0, 1, 4 }
 };
 
 // 各个进程还需要资源的数目
 int need[process_number][resource_kind] =
 {
-    {0, 0, 1, 2},
-    {1, 7, 5, 0},
-    {2, 3, 5, 6},
-    {0, 6, 5, 2},
-    {0, 6, 5, 6}
+    { 0, 0, 1, 2 },
+    { 1, 7, 5, 0 },
+    { 2, 3, 5, 6 },
+    { 0, 6, 5, 2 },
+    { 0, 6, 5, 6 }
 };
 
-int available[resource_kind] = {1, 6, 2, 2};  // 当前可用资源的数目
-int work[resource_kind]; // 系统可提供给进程继续运行所需的各类资源数目
-bool finish[process_number]; // 表示系统是否有足够的资源分配给进程，使之运行完成
-int process_queue[process_number] = {-1, -1, -1, -1, -1};  // 记录是否安全的进程序列
+int available[resource_kind] = { 1, 6, 2, 2 };  // 当前可用资源的数目
+int work[resource_kind];                        // 系统可提供给进程继续运行所需的各类资源数目
+bool finish[process_number];                    // 表示系统是否有足够的资源分配给进程，使之运行完成
+int process_queue[process_number] = { -1, -1, -1, -1, -1 };  // 记录是否安全的进程序列
 int process_number_index = 0;
 
 int main()
 {
-    int requesti;                  // 需要请求资源的进程号
+    int requesti = 2;                  // 需要请求资源的进程号
     cout << "几号进程请求资源？: ";
     cin >> requesti;
-    int request[requesti][resource_kind];      // 需要请求资源的进程需要的各类资源数
+    int request[resource_kind];        // 需要请求资源的进程需要的各类资源数
     cout << "分别输入需要各类资源的数目: ";
     for (int i = 0; i < resource_kind; ++i)
     {
-        cin >> request[requesti][i];
+        cin >> request[i];
     }
     bool flagn = false;
     for (int i = 0; i < resource_kind; ++i)
     {
-        if (request[requesti][i] > need[requesti][i])
+        if (request[i] > need[requesti][i])
         {
             flagn = true;
         }
@@ -62,7 +62,7 @@ int main()
         bool flaga = false;
         for (int i = 0; i < resource_kind; ++i)
         {
-            if (request[requesti][i] > available[i])
+            if (request[i] > available[i])
             {
                 flaga = true;
             }
@@ -75,9 +75,9 @@ int main()
         {
             for (int i = 0; i < resource_kind; ++i)
             {
-                available[i] = available[i] - request[requesti][i];
-                allocation[requesti][i] = allocation[requesti][i] + request[requesti][i];
-                need[requesti][i] = need[requesti][i] - request[requesti][i];
+                available[i] = available[i] - request[i];
+                allocation[requesti][i] = allocation[requesti][i] + request[i];
+                need[requesti][i] = need[requesti][i] - request[i];
             }
             security();
             showresult();
